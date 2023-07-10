@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
@@ -47,7 +47,16 @@ const pizzaData = [
   },
 ];
 
+// const currentTime = new Date().getHours();
+const currentTime = 13;
+const openTime = 12;
+const closeTime = 22;
+const isOpen = currentTime >= openTime && currentTime <= closeTime;
+
 function Pizza(props) {
+  if (props.soldOut) {
+    return null;
+  }
   return (
     <div className="pizza">
       <img src={props.photoName} alt={props.name} />
@@ -69,43 +78,65 @@ const Header = () => {
 };
 
 function Menu() {
+  const pizzas = pizzaData;
+  // const pizzas = [];
+
+  const numPizzas = pizzas.length;
+  console.log(numPizzas);
+
+  if (!isOpen) {
+    return <Closed />;
+  }
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <ul className="pizzas">
-        {pizzaData.map((pizza) => (
-          <Pizza
-            key={pizza.name}
-            photoName={pizza.photoName}
-            name={pizza.name}
-            ingredients={pizza.ingredients}
-            price={pizza.price}
-          />
-        ))}
-      </ul>
+      {numPizzas > 0 ? (
+        <ul className="pizzas">
+          {pizzaData.map((pizza) => (
+            <Pizza
+              key={pizza.name}
+              photoName={pizza.photoName}
+              name={pizza.name}
+              ingredients={pizza.ingredients}
+              price={pizza.price}
+              soldOut={pizza.soldOut}
+            />
+          ))}
+        </ul>
+      ) : (
+        <p>
+          We're are working on getting those delicious pizzas ready for you.{" "}
+          <br />
+          Please check back later :)
+        </p>
+      )}
     </main>
   );
 }
 
 function Footer() {
-  const currentTime = new Date().getHours();
-  // const currentTime = 13;
-  const openTime = 12;
-  const closeTime = 22;
-  const isOpen = currentTime >= openTime && currentTime <= closeTime;
-  console.log(currentTime);
-  console.log(isOpen);
+  return <footer className="footer">{isOpen && <Open />}</footer>;
+}
+
+function Closed() {
   return (
-    <footer className="footer">
-      {isOpen && (
-        <div className="order">
-          <p>
-            We're are open until {closeTime}:00. Come visit us or order online.!
-          </p>
-          <button className="btn">Order</button>
-        </div>
-      )}
-    </footer>
+    <>
+      <p className="footer">
+        We're currently closed, but happy to welcome you from {openTime}:00
+      </p>
+    </>
+  );
+}
+function Open() {
+  return (
+    <>
+      <div className="order">
+        <p>
+          We're are open until {closeTime}:00. Come visit us or order online.!
+        </p>
+        <button className="btn">Order</button>
+      </div>
+    </>
   );
 }
 
