@@ -45,7 +45,7 @@ function Menu() {
           <p>
             We're are working on getting those delicious pizzas ready for you.{" "}
             <br />
-            Please check back later :)
+            Please check back later :) for the delicious pizzas ready for you
           </p>
         )}
       </main>
