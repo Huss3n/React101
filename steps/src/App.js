@@ -5,30 +5,64 @@ const messages = [
   "Apply for jobs 💼",
   "Invest your new income 🤑",
 ];
+
 function App() {
-  const step = 3;
+  // const step = 3;
+  const [steps, setSteps] = useState(1);
+  const [close, setClose] = useState(true);
+  const [num, setNum] = useState(1);
+
+  // function closeUI() {
+  //   setClose(!close);
+  // }
+  function handlePrevious() {
+    setSteps(steps > 1 ? steps - 1 : steps - 0);
+    setNum((num) => (steps > 1 ? (num -= 1) : num - 0));
+  }
+
+  function handleNext() {
+    setSteps(steps < messages.length ? steps + 1 : steps + 0);
+    setNum((num) => (steps < messages.length ? (num += 1) : num + 0));
+  }
 
   return (
-    <div className="steps">
-      <div className="numbers">
-        <div className={`${step >= 1 ? "active" : ""}`}>1</div>
-        <div className={`${step >= 2 ? "active" : ""}`}>2</div>
-        <div className={`${step >= 3 ? "active" : ""}`}>3</div>
-      </div>
-      <div className="message">
-        <p>
-          Step {step}: {messages[step - 1]}
-        </p>
-      </div>
-      <div className="buttons">
-        <button style={{ backgroundColor: "#7950f2", color: "#fff" }}>
-          Previous
-        </button>
-        <button style={{ backgroundColor: "#7950f2", color: "#fff" }}>
-          Next
-        </button>
-      </div>
-    </div>
+    <>
+      <button className="close" onClick={() => setClose(!close)}>
+        {close ? "x" : "✔️"}
+      </button>
+
+      {close && (
+        <div>
+          <div className="close"></div>
+          <div className="steps">
+            <div className="numbers">
+              <div className={1 === num ? "active" : ""}>1</div>
+              <div className={2 === num ? "active" : ""}>2</div>
+              <div className={3 === num ? "active" : ""}>3</div>
+            </div>
+            <div className="message">
+              <p>
+                Step {steps}: {messages[steps - 1]}
+              </p>
+            </div>
+            <div className="buttons">
+              <button
+                style={{ backgroundColor: "#7950f2", color: "#fff" }}
+                onClick={handlePrevious}
+              >
+                Previous
+              </button>
+              <button
+                style={{ backgroundColor: "#7950f2", color: "#fff" }}
+                onClick={handleNext}
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
