@@ -1,3 +1,9 @@
+import { useState } from "react";
+const initialItems = [
+  { id: 1, description: "Passports", quantity: 2, packed: false },
+  { id: 2, description: "Socks", quantity: 12, packed: false },
+  { id: 2, description: "Keys", quantity: 2, packed: true },
+];
 export default function App() {
   return (
     <div className="app">
@@ -18,22 +24,40 @@ function Logo() {
 }
 
 function Form() {
+  const [description, setDescription] = useState("");
+  const [choice, setChoice] = useState(1);
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!description) return;
+    const newItem = { description, choice, packed: false, id: Date.now() };
+    setDescription("");
+    setChoice(1);
+    initialItems.push(newItem);
+    console.log(newItem);
+  }
   return (
-    <div className="add-form">
+    <form className="add-form" onSubmit={handleSubmit}>
       <h2>What do you need for your trip 😍</h2>
-      <select name="1" id="1"></select>
-      <input type="text" placeholder="Item..." />
-      <button>ADD</button>
-    </div>
+      <select value={choice} onChange={(e) => setChoice(e.target.value)}>
+        {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
+          <option value={num} key={num}>
+            {num}
+          </option>
+        ))}
+      </select>
+      <input
+        type="text"
+        placeholder="Item..."
+        id="item"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <button type="submit">ADD</button>
+    </form>
   );
 }
 
 function PackingList() {
-  const initialItems = [
-    { id: 1, description: "Passports", quantity: 2, packed: false },
-    { id: 2, description: "Socks", quantity: 12, packed: false },
-    { id: 2, description: "Keys", quantity: 2, packed: true },
-  ];
   return (
     <div className="list">
       <ul>
