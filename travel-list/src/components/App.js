@@ -37,12 +37,7 @@ export default function App() {
         handlePacked={handlePackedItem}
         clearList={clearList}
       />
-      <PackingList
-        item={item}
-        onDelete={handleDeleteItem}
-        handlePacked={handlePackedItem}
-        clearList={clearList}
-      />
+
       <Stats item={item} />
     </div>
   );
